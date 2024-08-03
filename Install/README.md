@@ -6,14 +6,14 @@ This repository contains scripts for installing Nextcloud.
 
 To install Nextcloud, follow these steps:
 
-1. Clone this repository to your local machine.
+1. Download the Script to your local machine.
 ```shell
-winget clone https://github.com/anton-franck/nextcloud-scripts.git
+wget https://github.com/anton-franck/nextcloud-scripts/blob/main/Install/ncinstall.sh
 ```
 
-2. Run the installation script.
+2. Give it Root Rights
 ```shell
-cd nextcloud-scripts/Install
+chmod +x ncinstall.sh
 ./install.sh
 ```
 
