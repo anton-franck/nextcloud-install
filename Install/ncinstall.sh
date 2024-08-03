@@ -72,7 +72,7 @@ else
 fi
 
 # Pfad zur php.ini Datei
-INI_FILE="/etc/php/8.2/apache2/php.ini"
+INI_FILE="/etc/php/8.1/apache2/php.ini"
 
 # Array von Konfigurationsparametern und ihren neuen Werten
 declare -A config_changes=(
