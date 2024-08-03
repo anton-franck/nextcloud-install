@@ -40,7 +40,7 @@ echo Setup Database
 
 mysql_secure_installation
 
-myql create database nextcloud;
+myql CREATE DATABASE nextcloud;
 
 echo "Setup PhP"
 
@@ -54,7 +54,7 @@ else
 fi
 
 echo "Please enter the upload limit:"
-read -p "Geben Sie das gewünschte Memory-Limit ein: " uploadphp
+read -p "Geben Sie das gewünschte Uploadsize ein: " uploadphp
 
 if [ "$uploadphp" != "" ]; then
     echo "Das Memory-Limit wird auf $uploadphp gesetzt."
@@ -63,7 +63,7 @@ else
 fi
 
 echo "Please enter the Timezone bsp:(Europe/Berlin):"
-read -p "Geben Sie das gewünschte Memory-Limit ein: " timephp
+read -p "Geben Sie das gewünschte Timezone ein: " timephp
 
 if [ "$timephp" != "" ]; then
     echo "Das Memory-Limit wird auf $timephp gesetzt."
@@ -120,7 +120,8 @@ echo "Installiere Server"
 cd /tmp
 unzip $zip
 
-mv nextcloud /var/www/html/
+rm /var/www/html/index.html
+mv nextcloud/* /var/www/html/
 
 chown -R www-data:www-data /var/www/nextcloud/html/
 chmod -R 755 /var/www/nextcloud/html/
