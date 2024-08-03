@@ -33,7 +33,7 @@ echo Install Lampstack
 
 apt install apache2 -y
 apt install mariadb-server -y
-apt install php libapache2-mod-php php-mysql php-curl php-gd php-json php-mbstring php-intl php-imagick php-xml php-zip -y
+apt install php libapache2-mod-php php-mysql php-curl php-gd php-json php-mbstring php-intl php-imagick php-xml php-zip php-bcmath php-gmp -y
 apt install unzip -y
 
 echo Setup Database
