@@ -19,9 +19,9 @@ chmod +x ncinstall.sh
 
 3. Follow the prompts to configure Nextcloud.
 
--Version
--Database (y,y, Your Passwort, y to end)
--PHP Setup what you want for your Server
+1. Version
+2. Database (y,y, Your Passwort, y to end)
+3. PHP Setup what you want for your Server
 
 
 4. Access Nextcloud through your web browser.
@@ -30,8 +30,8 @@ http://localhost/
 ```
 5. Create Your Account and add
 
-Databaseuser: root
-Passwort: Your Passwort
-Database: nextcloud
+1. Databaseuser: root
+2. Passwort: Your Passwort
+3. Database: nextcloud
 
 Have Fun!
