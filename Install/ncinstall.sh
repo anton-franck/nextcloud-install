@@ -123,8 +123,8 @@ unzip $zip
 rm /var/www/html/index.html
 mv nextcloud/* /var/www/html/
 
-chown -R www-data:www-data /var/www/nextcloud/html/
-chmod -R 755 /var/www/nextcloud/html/
+chown -R www-data:www-data /var/www/html/
+chmod -R 755 /var/www/html/
 
 a2enmod rewrite
 a2enmod headers
