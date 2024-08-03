@@ -119,6 +119,7 @@ echo "Installiere Server"
 
 cd /tmp
 unzip $zip
+rm $zip
 
 rm /var/www/html/index.html
 mv nextcloud/* /var/www/html/
