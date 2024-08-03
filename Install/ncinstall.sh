@@ -26,4 +26,88 @@ fi
 cd /tmp
 wget $version
 
-echo Install needet Packages
+echo Install Lampstack
+
+apt install apache2 -y
+apt install mariadb-server -y
+apt install php libapache2-mod-php php-mysql php-curl php-gd php-json php-mbstring php-intl php-imagick php-xml php-zip -y
+apt install unzip -y
+
+echo Setup Database
+
+mysql_secure_installation
+
+myql create database nextcloud;
+
+echo "Setup PhP"
+
+echo "Please enter the memory limit:"
+read -p "Geben Sie das gewünschte Memory-Limit ein: " memoryphp
+
+if [ "$memoryphp" != "" ]; then
+    echo "Das Memory-Limit wird auf $memoryphp gesetzt."
+else
+    echo "Ungültige Eingabe. Das Memory-Limit bleibt unverändert."
+fi
+
+echo "Please enter the upload limit:"
+read -p "Geben Sie das gewünschte Memory-Limit ein: " uploadphp
+
+if [ "$uploadphp" != "" ]; then
+    echo "Das Memory-Limit wird auf $uploadphp gesetzt."
+else
+    echo "Ungültige Eingabe. Das Memory-Limit bleibt unverändert."
+fi
+
+echo "Please enter the Timezone bsp:(Europe/Berlin):"
+read -p "Geben Sie das gewünschte Memory-Limit ein: " timephp
+
+if [ "$timephp" != "" ]; then
+    echo "Das Memory-Limit wird auf $timephp gesetzt."
+else
+    echo "Ungültige Eingabe. Das Memory-Limit bleibt unverändert."
+fi
+
+# Pfad zur php.ini Datei
+INI_FILE="/etc/php/8.2/apache2/php.ini"
+
+# Array von Konfigurationsparametern und ihren neuen Werten
+declare -A config_changes=(
+    ["memory_limit"]="$memoryphp"
+    ["upload_max_filesize"]="$uploadphp"
+    ["post_max_size"]="$uploadphp"
+    ["date.timezone"]="$timephp"
+    ["output_buffering"]="Off"
+    ["opcache.enable"]="1"
+    ["opcache.enable_cli"]="1"
+    ["opcache.interned_strings_buffer"]="64"
+    ["opcache.max_accelerated_files"]="10000"
+    ["opcache.memory_consumption"]="1024"
+    ["opcache.save_comments"]="1"
+    ["opcache.revalidate_freq"]="1"
+)
+
+# Überprüfen, ob die php.ini existiert
+if [ ! -f "$INI_FILE" ]; then
+    echo "Die php.ini Datei existiert nicht."
+    exit 1
+fi
+
+# Sichern der Originaldatei
+cp "$INI_FILE" "${INI_FILE}.bak"
+
+# Ändern der Konfigurationen in der php.ini
+for param in "${!config_changes[@]}"; do
+    new_value=${config_changes[$param]}
+    if grep -q "^$param" "$INI_FILE"; then
+        # Wenn der Parameter existiert, wird er ersetzt
+        sed -i "s/^$param.*/$param = $new_value/" "$INI_FILE"
+        echo "$param wurde auf $new_value gesetzt."
+    else
+        # Wenn der Parameter nicht existiert, wird er hinzugefügt
+        echo "$param = $new_value" >> "$INI_FILE"
+        echo "$param wurde hinzugefügt und auf $new_value gesetzt."
+    fi
+done
+
+echo "Alle Änderungen erfolgreich abgeschlossen."
