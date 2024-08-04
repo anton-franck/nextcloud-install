@@ -1,81 +1,78 @@
 #!/bin/bash
 
-echo "Willkommen zur Nextcloud-Installation!"
-echo "Welche Version von Nextcloud möchten Sie installieren?"
+echo "Welcome to Nextcloud installation!"
+echo "Which version of Nextcloud would you like to install?"
 echo "1. Nextcloud 28"
 echo "2. Nextcloud 29"
-echo "3. Neueste Version"
-read -p "Geben Sie die Nummer der gewünschten Version ein: " version
+echo "3. Latest version"
+read -p "Enter the number of the desired version: " version
 
 if [ "$version" == "1" ]; then
-    echo "Nextcloud 28 wird heruntergeladen..."
-    # Hier kannst du den Code für die Installation von Nextcloud 27 einfügen
-    version="https://download.nextcloud.com/server/releases/nextcloud-28.0.8.zip" # Ändere den Wert der Variable version auf "27"
+    echo "Downloading Nextcloud 28..."
+    version="https://download.nextcloud.com/server/releases/nextcloud-28.0.8.zip"
     zip="nextcloud-28.0.8.zip"
 elif [ "$version" == "2" ]; then
-    echo "Nextcloud 29 wird heruntergeladen..."
-    # Hier kannst du den Code für die Installation von Nextcloud 28 einfügen
-    version="https://download.nextcloud.com/server/releases/nextcloud-29.0.4.zip" # Ändere den Wert der Variable version auf "28"
+    echo "Downloading Nextcloud 29..."
+    version="https://download.nextcloud.com/server/releases/nextcloud-29.0.4.zip"
     zip="nextcloud-29.0.4.zip"
 elif [ "$version" == "3" ]; then
-    echo "Neueste Version wird heruntergeladen..."
-    # Hier kannst du den Code für die Installation der neuesten Version einfügen
-    version="https://download.nextcloud.com/server/releases/latest.zip" # Ändere den Wert der Variable version auf "latest"
+    echo "Downloading latest version..."
+    version="https://download.nextcloud.com/server/releases/latest.zip"
     zip="latest.zip"
 else
-    echo "Ungültige Eingabe. Bitte geben Sie entweder 1, 2 oder 3 ein."
+    echo "Invalid input. Please enter either 1, 2, or 3."
 fi
 
 cd /tmp
-wget $version
+wget $version #Download Nextcloud from http://download.nextcloud.com/server/
 
 echo Install Lampstack
 
-apt install apache2 -y
-apt install mariadb-server -y
-apt install php libapache2-mod-php php-mysql php-curl php-gd php-json php-mbstring php-intl php-imagick php-xml php-zip php-bcmath php-gmp -y
-apt install unzip -y
+apt install apache2 -y #Install Apache2
+apt install mariadb-server -y #Install MariaDB
+apt install php libapache2-mod-php php-mysql php-curl php-gd php-json php-mbstring php-intl php-imagick php-xml php-zip php-bcmath php-gmp -y #Install PHP and its modules
+apt install unzip -y #Install Unzip
 
 echo Setup Database
 
-mysql_secure_installation
+mysql_secure_installation #Secure MariaDB Installation
 
-myql CREATE DATABASE nextcloud;
+myql CREATE DATABASE nextcloud; #Create Database for Nextcloud
 
 echo "Setup PhP"
 
 echo "Please enter the memory limit:"
-read -p "Geben Sie das gewünschte Memory-Limit ein: " memoryphp
+read -p "Enter the desired memory limit: " memoryphp
 
 if [ "$memoryphp" != "" ]; then
-    echo "Das Memory-Limit wird auf $memoryphp gesetzt."
+    echo "The memory limit will be set to $memoryphp."
 else
-    echo "Ungültige Eingabe. Das Memory-Limit bleibt unverändert."
+    echo "Invalid input. The memory limit will remain unchanged."
 fi
 
 echo "Please enter the upload limit:"
-read -p "Geben Sie das gewünschte Uploadsize ein: " uploadphp
+read -p "Enter the desired upload size: " uploadphp
 
 if [ "$uploadphp" != "" ]; then
-    echo "Das Memory-Limit wird auf $uploadphp gesetzt."
+    echo "The upload limit will be set to $uploadphp."
 else
-    echo "Ungültige Eingabe. Das Memory-Limit bleibt unverändert."
+    echo "Invalid input. The upload limit will remain unchanged."
 fi
 
-echo "Please enter the Timezone bsp:(Europe/Berlin):"
-read -p "Geben Sie das gewünschte Timezone ein: " timephp
+echo "Please enter the timezone (e.g., Europe/Berlin):"
+read -p "Enter the desired timezone: " timephp
 
 if [ "$timephp" != "" ]; then
-    echo "Das Memory-Limit wird auf $timephp gesetzt."
+    echo "The timezone will be set to $timephp."
 else
-    echo "Ungültige Eingabe. Das Memory-Limit bleibt unverändert."
+    echo "Invalid input. The timezone will remain unchanged."
 fi
 
-# Pfad zur php.ini Datei
+
 INI_FILE="/etc/php/8.1/apache2/php.ini"
 
-# Array von Konfigurationsparametern und ihren neuen Werten
-declare -A config_changes=(
+
+declare -A config_changes=( #All Changes for Php.ini
     ["memory_limit"]="$memoryphp"
     ["upload_max_filesize"]="$uploadphp"
     ["post_max_size"]="$uploadphp"
@@ -90,49 +87,45 @@ declare -A config_changes=(
     ["opcache.revalidate_freq"]="1"
 )
 
-# Überprüfen, ob die php.ini existiert
-if [ ! -f "$INI_FILE" ]; then
-    echo "Die php.ini Datei existiert nicht."
+if [ ! -f "$INI_FILE" ]; then #Check if Php.ini exists
+    echo "The php.ini file does not exist."
     exit 1
 fi
 
-# Sichern der Originaldatei
+# Create a backup of the php.ini file
 cp "$INI_FILE" "${INI_FILE}.bak"
 
-# Ändern der Konfigurationen in der php.ini
+# Change your Changes in the php.ini file
 for param in "${!config_changes[@]}"; do
     new_value=${config_changes[$param]}
     if grep -q "^$param" "$INI_FILE"; then
-        # Wenn der Parameter existiert, wird er ersetzt
         sed -i "s/^$param.*/$param = $new_value/" "$INI_FILE"
-        echo "$param wurde auf $new_value gesetzt."
-    else
-        # Wenn der Parameter nicht existiert, wird er hinzugefügt
+        echo "$param has been set to $new_value."
+        else
         echo "$param = $new_value" >> "$INI_FILE"
-        echo "$param wurde hinzugefügt und auf $new_value gesetzt."
+        echo "$param has been added and set to $new_value."
     fi
 done
+echo "All changes successfully completed."
 
-echo "Alle Änderungen erfolgreich abgeschlossen."
+echo "Installing server"
 
-echo "Installiere Server"
+cd /tmp 
+unzip $zip #Unzip Nextcloud
+rm $zip #Remove Zip File
 
-cd /tmp
-unzip $zip
-rm $zip
+rm /var/www/html/index.html #Remove Apache2 Default Page
+mv nextcloud/* /var/www/html/ #Move Nextcloud Files to Apache2 Directory
 
-rm /var/www/html/index.html
-mv nextcloud/* /var/www/html/
-
-chown -R www-data:www-data /var/www/html/
-chmod -R 755 /var/www/html/
+chown -R www-data:www-data /var/www/html/ #Change Owner of Nextcloud-Directory
+chmod -R 755 /var/www/html/   #Change Permissions of Nextcloud-Directory
 
 a2enmod rewrite
 a2enmod headers
 a2enmod env
 a2enmod dir
-a2enmod mime
+a2enmod mime #Enable Apache2 Modules
 
-service apache2 start
+service apache2 start #Start Apache2
 
-echo "Nextcloud wurde erfolgreich installiert. Öffnen Sie Ihren Browser und geben Sie die IP-Adresse Ihres Servers ein, um die Konfiguration abzuschließen."
+echo "Nextcloud was successfully installed. Open your browser and enter the IP address of your server to complete the configuration."
