@@ -129,5 +129,6 @@ a2enmod dir
 a2enmod mime #Enable Apache2 Modules
 
 service apache2 start #Start Apache2
+service apache2 restart #Restart Apache2
 
 echo "Nextcloud was successfully installed. Open your browser and enter the IP address of your server to complete the configuration."
