@@ -28,6 +28,8 @@ wget $version #Download Nextcloud from http://download.nextcloud.com/server/
 
 echo Install Lampstack
 
+apt update  -y #Update Package List
+apt upgrade -y #Upgrade Packages
 apt install apache2 -y #Install Apache2
 apt install mariadb-server -y #Install MariaDB
 apt install php libapache2-mod-php php-mysql php-curl php-gd php-json php-mbstring php-intl php-imagick php-xml php-zip php-bcmath php-gmp -y #Install PHP and its modules
