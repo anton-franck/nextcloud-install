@@ -19,6 +19,37 @@ else
     echo "Invalid input. The .zip file name will remain unchanged."
 fi
 
+
+cd /tmp
+wget $version #Download Nextcloud from http://download.nextcloud.com/server/
+
+echo Install Lampstack
+
+apt update  -y #Update Package List
+apt upgrade -y #Upgrade Packages
+apt install apache2 -y #Install Apache2
+apt install mariadb-server -y #Install MariaDB
+apt install php libapache2-mod-php php-mysql php-curl php-gd php-json php-mbstring php-intl php-imagick php-xml php-zip php-bcmath php-gmp -y #Install PHP and its modules
+apt install unzip -y #Install Unzip
+
+echo Setup Database
+
+mysql_secure_installation #Secure MariaDB Installation
+
+myql CREATE DATABASE nextcloud; #Create Database for Nextcloud
+
+echo "Setup PhP"
+
+echo "Please enter the memory limit:"
+read -p "Enter the desired memory limit: " memoryphp
+
+if [ "$memoryphp" != "" ]; then
+    echo "The memory limit will be set to $memoryphp."
+else
+    echo "Invalid input. The memory limit will remain unchanged."
+fi
+
+
 echo "Please enter the upload limit:"
 read -p "Enter the desired upload size: " uploadphp
 
