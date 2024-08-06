@@ -13,7 +13,7 @@ wget https://github.com/anton-franck/nextcloud-install/blob/main/install.sh
 
 #2. Give it Root Rights and Start it
 ```shell
-chmod +x ncinstall.sh
+chmod +x install.sh
 ./install.sh
 ```
 
