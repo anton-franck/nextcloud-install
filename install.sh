@@ -1,55 +1,22 @@
 #!/bin/bash
 
 echo "Welcome to Nextcloud installation!"
-echo "Which version of Nextcloud would you like to install?"
-echo "1. Nextcloud 28"
-echo "2. Nextcloud 29"
-echo "3. Latest version"
-read -p "Enter the number of the desired version: " version
+read -p "Enter the URL of the desired version: " version
 
-if [ "$version" == "1" ]; then
-    echo "Downloading Nextcloud 28..."
-    version="https://download.nextcloud.com/server/releases/nextcloud-28.0.8.zip"
-    zip="nextcloud-28.0.8.zip"
-elif [ "$version" == "2" ]; then
-    echo "Downloading Nextcloud 29..."
-    version="https://download.nextcloud.com/server/releases/nextcloud-29.0.4.zip"
-    zip="nextcloud-29.0.4.zip"
-elif [ "$version" == "3" ]; then
-    echo "Downloading latest version..."
-    version="https://download.nextcloud.com/server/releases/latest.zip"
-    zip="latest.zip"
+if [ "$version" != "" ]; then
+    echo "Downloading Nextcloud..."
+    zip=$(basename "$version")
 else
-    echo "Invalid input. Please enter either 1, 2, or 3."
+    echo "Invalid input. Please enter a valid URL."
 fi
 
-cd /tmp
-wget $version #Download Nextcloud from http://download.nextcloud.com/server/
+echo "Please enter the name of the .zip file:"
+read -p "Enter the desired .zip file name: " zip
 
-echo Install Lampstack
-
-apt update  -y #Update Package List
-apt upgrade -y #Upgrade Packages
-apt install apache2 -y #Install Apache2
-apt install mariadb-server -y #Install MariaDB
-apt install php libapache2-mod-php php-mysql php-curl php-gd php-json php-mbstring php-intl php-imagick php-xml php-zip php-bcmath php-gmp -y #Install PHP and its modules
-apt install unzip -y #Install Unzip
-
-echo Setup Database
-
-mysql_secure_installation #Secure MariaDB Installation
-
-myql CREATE DATABASE nextcloud; #Create Database for Nextcloud
-
-echo "Setup PhP"
-
-echo "Please enter the memory limit:"
-read -p "Enter the desired memory limit: " memoryphp
-
-if [ "$memoryphp" != "" ]; then
-    echo "The memory limit will be set to $memoryphp."
+if [ "$zip" != "" ]; then
+    echo "The .zip file name will be set to $zip."
 else
-    echo "Invalid input. The memory limit will remain unchanged."
+    echo "Invalid input. The .zip file name will remain unchanged."
 fi
 
 echo "Please enter the upload limit:"

@@ -1,4 +1,4 @@
-# NC-Install-Script 1.0
+# NC-Install-Script-Custom Beta  1.1
 
 This Script installing Nextcloud.
 
@@ -19,9 +19,10 @@ chmod +x ncinstall.sh
 
 3. Follow the prompts to configure Nextcloud.
 
-1. Version
-2. Database (y,y, Your Passwort, y to end)
-3. PHP Setup what you want for your Server
+1. Add the Downloadlink of your Version
+2. Say the Name of the ZIP file
+3. Database (y,y, Your Passwort, y to end)
+4. PHP Setup what you want for your Server
 
 
 4. Access Nextcloud through your web browser.
