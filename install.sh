@@ -1,11 +1,12 @@
 #!/bin/bash
 
-echo "Welcome to Nextcloud installation!"
+echo "Welcome to the Nextcloud-Installscript V1.3!"
 echo "Which version of Nextcloud would you like to install?"
 echo "1. Nextcloud 28"
 echo "2. Nextcloud 29"
 echo "3. Latest version"
-read -p "Enter the number of the desired version: " version
+echo "4. Custom version"
+read -p "Enter the number which Version you want to install: " version
 
 if [ "$version" == "1" ]; then
     echo "Downloading Nextcloud 28..."
@@ -19,11 +20,29 @@ elif [ "$version" == "3" ]; then
     echo "Downloading latest version..."
     version="https://download.nextcloud.com/server/releases/latest.zip"
     zip="latest.zip"
+elif [ "$version" == "4" ]; then
+    read -p "Enter the URL of the desired version: " version
+
+    if [ "$version" != "" ]; then
+        zip=$(basename "$version")
+    else
+        echo "Invalid input. Please enter a valid URL."
+    fi
+
+    echo "Please enter the name of the .zip file:"
+    read -p "Enter the desired .zip file name: " zip
+
+    if [ "$zip" != "" ]; then
+        echo "The .zip file name will be set to $zip."
+    else
+        echo "Invalid input. The .zip file name will remain unchanged."
+    fi
 else
-    echo "Invalid input. Please enter either 1, 2, or 3."
+    echo "Invalid input. Please enter either 1, 2, 3, or 4."
 fi
 
 cd /tmp
+echo "Downloading Nextcloud..."
 wget $version #Download Nextcloud from http://download.nextcloud.com/server/
 
 echo Install Lampstack
