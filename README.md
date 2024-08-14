@@ -1,4 +1,4 @@
-# NC-Install-Scripts Beta V 1.8
+# NC-Install-Scripts Beta V-1.8
 
 This Script installing Nextcloud.
 
@@ -26,7 +26,7 @@ chmod +x install.sh
 
 #4. Access Nextcloud through your web browser.
 ```plaintext
-http://localhost/
+http://{IP of your Server}/
 ```
 #5. Create Your Account and add
 

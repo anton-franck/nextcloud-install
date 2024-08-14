@@ -165,3 +165,4 @@ service apache2 start #Start Apache2
 service apache2 restart #Restart Apache2
 
 echo "Nextcloud was successfully installed. Open your browser and enter the IP address of your server to complete the configuration."
+echo "First write your Account Data. Setup it with "root" and the Databasepassword. The Database Name is "nextcloud". 
