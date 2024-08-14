@@ -1,4 +1,4 @@
-# NC-Install-Scripts Beta V-1.8
+# NC-Install-Scripts Beta V-1.8.4
 
 This Script installing Nextcloud.
 
