@@ -8,7 +8,7 @@ To install Nextcloud, follow these steps:
 
 #1. Download the Script to your local machine.
 ```shell
-wget https://raw.githubusercontent.com/anton-franck/nextcloud-install/V1.3/install.sh
+wget https://raw.githubusercontent.com/anton-franck/nextcloud-install/V2-Beta/install.sh
 ```
 
 #2. Give it Root Rights and Start it
