@@ -90,7 +90,21 @@ else
 fi
 
 
-INI_FILE="/etc/php/8.1/apache2/php.ini"
+BASE_PATH="/etc/php"
+
+for VERSION in 8.{1..3} #Look who is the PHP-File
+do
+    INI_FILE="$BASE_PATH/$VERSION/apache2/php.ini"
+    
+    if [ -f "$INI_FILE" ]; then
+        echo "Gefundene php.ini: $INI_FILE"
+        break
+    fi
+done
+
+if [ ! -f "$INI_FILE" ]; then
+    echo "Keine php.ini gefunden."
+fi
 
 
 declare -A config_changes=( #All Changes for Php.ini
