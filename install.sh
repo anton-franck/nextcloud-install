@@ -62,8 +62,8 @@ myql CREATE DATABASE nextcloud; #Create Database for Nextcloud
 
 echo "Setup PhP"
 
-echo "Please enter the memory limit:"
-read -p "Enter the desired memory limit: " memoryphp
+echo "Now we ask you some Questions for PHP:"
+read -p "Enter the memory limit: " memoryphp
 
 if [ "$memoryphp" != "" ]; then
     echo "The memory limit will be set to $memoryphp."
@@ -71,7 +71,6 @@ else
     echo "Invalid input. The memory limit will remain unchanged."
 fi
 
-echo "Please enter the upload limit:"
 read -p "Enter the desired upload size: " uploadphp
 
 if [ "$uploadphp" != "" ]; then
@@ -80,8 +79,7 @@ else
     echo "Invalid input. The upload limit will remain unchanged."
 fi
 
-echo "Please enter the timezone (e.g., Europe/Berlin):"
-read -p "Enter the desired timezone: " timephp
+read -p "Please enter the timezone (e.g., Europe/Berlin): " timephp
 
 if [ "$timephp" != "" ]; then
     echo "The timezone will be set to $timephp."
