@@ -8,38 +8,36 @@ echo "3. Latest version"
 echo "4. Custom version"
 read -p "Enter the number which Version you want to install: " version
 
-if [ "$version" == "1" ]; then
-    echo "Downloading Nextcloud 28..."
-    version="https://download.nextcloud.com/server/releases/nextcloud-28.0.8.zip"
-    zip="nextcloud-28.0.8.zip"
-elif [ "$version" == "2" ]; then
-    echo "Downloading Nextcloud 29..."
-    version="https://download.nextcloud.com/server/releases/nextcloud-29.0.4.zip"
-    zip="nextcloud-29.0.4.zip"
-elif [ "$version" == "3" ]; then
-    echo "Downloading latest version..."
-    version="https://download.nextcloud.com/server/releases/latest.zip"
-    zip="latest.zip"
-elif [ "$version" == "4" ]; then
-    read -p "Enter the URL of the desired version: " version
+    if [ "$version" == "1" ]; then
+        echo "Downloading Nextcloud 28..."
+        version="https://download.nextcloud.com/server/releases/nextcloud-28.0.8.zip"
+        zip="nextcloud-28.0.8.zip"
+    elif [ "$version" == "2" ]; then
+        echo "Downloading Nextcloud 29..."
+        version="https://download.nextcloud.com/server/releases/nextcloud-29.0.4.zip"
+        zip="nextcloud-29.0.4.zip"
+    elif [ "$version" == "3" ]; then
+        echo "Downloading latest version..."
+        version="https://download.nextcloud.com/server/releases/latest.zip"
+        zip="latest.zip"
+    elif [ "$version" == "4" ]; then
+    read -p "Enter the URL of the desired Nextcloud version: " version
 
     if [ "$version" != "" ]; then
         zip=$(basename "$version")
+        
+        if [[ "$zip" == *.zip ]]; then
+            echo "The zip file to download is: $zip"
+        else
+            echo "The URL does not point to a .zip file. Please provide a valid Nextcloud .zip URL."
+        fi
     else
         echo "Invalid input. Please enter a valid URL."
     fi
 
-    echo "Please enter the name of the .zip file:"
-    read -p "Enter the desired .zip file name: " zip
-
-    if [ "$zip" != "" ]; then
-        echo "The .zip file name will be set to $zip."
     else
-        echo "Invalid input. The .zip file name will remain unchanged."
+        echo "Invalid input. Please enter either 1, 2, 3, or 4."
     fi
-else
-    echo "Invalid input. Please enter either 1, 2, 3, or 4."
-fi
 
 cd /tmp
 echo "Downloading Nextcloud..."
@@ -164,5 +162,3 @@ service apache2 restart #Restart Apache2
 
 echo "Nextcloud was successfully installed. Open your browser and enter the IP address of your server to complete the configuration."
 echo "First write your Account Data. Setup it with "root" and the Databasepassword. The Database Name is "nextcloud". 
-
-rm /root/install.sh
