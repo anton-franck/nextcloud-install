@@ -145,11 +145,35 @@ cd /tmp
 unzip $zip #Unzip Nextcloud
 rm $zip #Remove Zip File
 
-rm /var/www/html/index.html #Remove Apache2 Default Page
-mv nextcloud/* /var/www/html/ #Move Nextcloud Files to Apache2 Directory
+rm -rf /var/www/html #Remove Apache2 Default Page
+mv nextcloud/ /var/www/ #Move Nextcloud Files to Apache2 Directory
 
-chown -R www-data:www-data /var/www/html/ #Change Owner of Nextcloud-Directory
-chmod -R 755 /var/www/html/   #Change Permissions of Nextcloud-Directory
+chown -R www-data:www-data /var/www/nextcloud/ #Change Owner of Nextcloud-Directory
+chmod -R 755 /var/www/nextcloud/   #Change Permissions of Nextcloud-Directory
+
+cat <<EOL > /etc/apache2/sites-available/nextcloud.conf #Make a new Config File for Apache2
+<VirtualHost *:80>
+     DocumentRoot /var/www/nextcloud/
+     <Directory /var/www/nextcloud/>
+        Options +FollowSymlinks
+        AllowOverride All
+        Require all granted
+          <IfModule mod_dav.c>
+            Dav off
+          </IfModule>
+        SetEnv HOME /var/www/nextcloud
+        SetEnv HTTP_HOME /var/www/nextcloud
+     </Directory>
+     ErrorLog \${APACHE_LOG_DIR}/error.log
+     CustomLog \${APACHE_LOG_DIR}/access.log combined
+</VirtualHost>
+EOL
+
+a2ensite nextcloud.conf #Enable new config
+
+systemctl restart apache2
+
+echo "Die nextcloud.conf wurde erfolgreich erstellt und Apache2 wurde neu gestartet."
 
 a2enmod rewrite
 a2enmod headers
