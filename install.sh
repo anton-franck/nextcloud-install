@@ -61,7 +61,7 @@ myql CREATE DATABASE nextcloud; #Create Database for Nextcloud
 echo "Setup PhP"
 
 echo "Now we ask you some Questions for PHP:"
-read -p "Enter the memory limit: " memoryphp
+read -p "Enter the memory limit maybe(2048): " memoryphp
 
 if [ "$memoryphp" != "" ]; then
     echo "The memory limit will be set to $memoryphp."
@@ -74,7 +74,7 @@ read -p "Enter the desired upload size: " uploadphp
 if [ "$uploadphp" != "" ]; then
     echo "The upload limit will be set to $uploadphp."
 else
-    echo "Invalid input. The upload limit will remain unchanged."
+    echo "Invalid input. The upload limit will remain unchanged. maybe (50G)?"
 fi
 
 read -p "Please enter the timezone (e.g., Europe/Berlin): " timephp
@@ -104,7 +104,7 @@ fi
 
 
 declare -A config_changes=( #All Changes for Php.ini
-    ["memory_limit"]="$memoryphp"
+    ["memory_limit"]="$memoryphpM"
     ["upload_max_filesize"]="$uploadphp"
     ["post_max_size"]="$uploadphp"
     ["date.timezone"]="$timephp"
