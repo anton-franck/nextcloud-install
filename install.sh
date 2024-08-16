@@ -61,7 +61,7 @@ myql CREATE DATABASE nextcloud; #Create Database for Nextcloud
 echo "Setup PhP"
 
 echo "Now we ask you some Questions for PHP:"
-read -p "Enter the memory limit maybe(2048): " memoryphp
+read -p "Enter the memory limit maybe(2048M): " memoryphp
 
 if [ "$memoryphp" != "" ]; then
     echo "The memory limit will be set to $memoryphp."
@@ -104,7 +104,7 @@ fi
 
 
 declare -A config_changes=( #All Changes for Php.ini
-    ["memory_limit"]="$memoryphpM"
+    ["memory_limit"]="$memoryphp"
     ["upload_max_filesize"]="$uploadphp"
     ["post_max_size"]="$uploadphp"
     ["date.timezone"]="$timephp"
