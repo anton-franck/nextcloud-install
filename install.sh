@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo "Welcome to the Nextcloud-Installscript V1.8.9!"
+echo "Welcome to the Nextcloud-Installscript V1.9.2!"
 echo "Which version of Nextcloud would you like to install?"
 echo "1. Nextcloud 28"
 echo "2. Nextcloud 29"
