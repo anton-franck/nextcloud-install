@@ -35,3 +35,11 @@ http://{IP of your Server}/
 3. Database: nextcloud
 
 Have Fun!
+
+---
+
+**Important:**
+
+This script is licensed under the MIT License. See the [LICENSE](https://github.com/anton-franck/nextcloud-install/V2-Beta/LICENSE) file for more information.
+
+Copyright © 2024 Anton Franck.
