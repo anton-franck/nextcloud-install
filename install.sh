@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# This Script is from Anton-Franck (https://github.com/anton-franck) to install Nextcloud Easy
+
 echo "Welcome to the Nextcloud-Installscript V1.9.2!"
 echo "Which version of Nextcloud would you like to install?"
 echo "1. Nextcloud 28"
@@ -187,3 +189,5 @@ service apache2 restart #Restart Apache2
 
 echo "Nextcloud was successfully installed. Open your browser and enter the IP address of your server to complete the configuration"
 echo "First write your Account Data. Setup it with root and the Databasepassword. The Database Name is nextcloud"
+
+# This Script is from Anton-Franck (https://github.com/anton-franck) to install Nextcloud Easy
