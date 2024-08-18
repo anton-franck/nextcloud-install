@@ -2,7 +2,13 @@
 
 # This Script is from Anton-Franck (https://github.com/anton-franck) to install Nextcloud Easy
 
-echo "Welcome to the Nextcloud-Installscript V1.9.4! for Ubuntu 20.04-24.04 and Debian 10-11"
+# Look if the Script is running as Root
+if [ "$EUID" -ne 0 ]; then
+  echo "Please run the Script as root"
+  exit 1
+fi
+
+echo "Welcome to the Nextcloud-Installscript V1.9.5! for Ubuntu 20.04-24.04 and Debian 10-11"
 echo "Which version of Nextcloud would you like to install?"
 echo "1. Nextcloud 28"
 echo "2. Nextcloud 29"
@@ -10,36 +16,36 @@ echo "3. Latest version"
 echo "4. Custom version // to install older Versions or Beta Versions"
 read -p "Enter the number which Version you want to install: " version
 
-    if [ "$version" == "1" ]; then
-        echo "Downloading Nextcloud 28..."
-        version="https://download.nextcloud.com/server/releases/nextcloud-28.0.8.zip"
-        zip="nextcloud-28.0.8.zip"
-    elif [ "$version" == "2" ]; then
-        echo "Downloading Nextcloud 29..."
-        version="https://download.nextcloud.com/server/releases/nextcloud-29.0.4.zip"
-        zip="nextcloud-29.0.4.zip"
-    elif [ "$version" == "3" ]; then
-        echo "Downloading latest version..."
-        version="https://download.nextcloud.com/server/releases/latest.zip"
-        zip="latest.zip"
-    elif [ "$version" == "4" ]; then
+if [ "$version" == "1" ]; then
+    echo "Downloading Nextcloud 28..."
+    version="https://download.nextcloud.com/server/releases/nextcloud-28.0.8.zip"
+    zip="nextcloud-28.0.8.zip"
+elif [ "$version" == "2" ]; then
+    echo "Downloading Nextcloud 29..."
+    version="https://download.nextcloud.com/server/releases/nextcloud-29.0.4.zip"
+    zip="nextcloud-29.0.4.zip"
+elif [ "$version" == "3" ]; then
+    echo "Downloading latest version..."
+    version="https://download.nextcloud.com/server/releases/latest.zip"
+    zip="latest.zip"
+elif [ "$version" == "4" ]; then
     read -p "Enter the URL of the desired Nextcloud version: " version
-
     if [ "$version" != "" ]; then
         zip=$(basename "$version")
-        
         if [[ "$zip" == *.zip ]]; then
             echo "The zip file to download is: $zip"
         else
             echo "The URL does not point to a .zip file. Please provide a valid Nextcloud .zip URL."
+            exit 1
         fi
     else
         echo "Invalid input. Please enter a valid URL."
+        exit 1
     fi
-
-    else
-        echo "Invalid input. Please enter either 1, 2, 3, or 4."
-    fi
+else
+    echo "Invalid input. Please enter either 1, 2, 3, or 4."
+    exit 1
+fi
 
 cd /tmp
 echo "Downloading Nextcloud..."
