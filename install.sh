@@ -8,7 +8,7 @@ if [ "$EUID" -ne 0 ]; then
   exit 1
 fi
 
-echo "Welcome to the Nextcloud-Installscript V1.9.6! for Ubuntu 20.04-24.04 and Debian 11 and 12"
+echo "Welcome to the Nextcloud-Installscript V2! for Ubuntu 20.04-24.04 and Debian 11 and 12"
 echo "Which version of Nextcloud would you like to install?"
 echo "1. Nextcloud 28"
 echo "2. Nextcloud 29 (Needs PHP 8)"

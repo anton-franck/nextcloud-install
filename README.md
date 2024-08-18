@@ -1,45 +1,50 @@
-# NC-Install-Scripts Beta V-1.9.2
+# NC-Install-Scripts V2
 
-This Script installing Nextcloud.
+This script installs Nextcloud.
 
-## Easy Installation
+### Prerequisites
+
+- Ubuntu 20.04-24.04 or Debian 11 and 12
+- Root privileges
+
+## Easy Installation Guide
 
 To install Nextcloud, follow these steps:
 
-#1. Download the Script to your local machine.
-```shell
-wget https://raw.githubusercontent.com/anton-franck/nextcloud-install/V2-Beta/install.sh
-```
+### Installation
 
-#2. Give it Root Rights and Start it
-```shell
-chmod +x install.sh
-./install.sh
-```
+1. Download the script to your local machine:
+    ```shell
+    wget https://raw.githubusercontent.com/anton-franck/nextcloud-install/main/install.sh
+    ```
 
-#3. Follow the prompts to configure Nextcloud.
+2. Give it root rights and start it:
+    ```shell
+    chmod +x install.sh
+    ./install.sh
+    ```
 
-1. Enter your Version (Know you can type your Own version with the .zip Link and the Name of the Zip file)
-2. Database (y,y, Your Passwort, y to end)
-3. PHP Setup what you want for your Server
+3. Follow the prompts to configure Nextcloud:
+    1. Enter your version (you can type your own version with the .zip link).
+    2. Database (set up your database password).
+    3. PHP settings for your server.
 
+4. Access Nextcloud through your web browser:
+    ```plaintext
+    http://{IP of your server}/
+    ```
 
-#4. Access Nextcloud through your web browser.
-```plaintext
-http://{IP of your Server}/
-```
-#5. Create Your Account and add
+5. Create your account and add the following information:
+    1. Database user: root
+    2. Password: your password
+    3. Database: nextcloud
 
-1. Databaseuser: root
-2. Passwort: Your Passwort
-3. Database: nextcloud
-
-Have Fun!
+Have fun!
 
 ---
 
 **Important:**
 
-This script is licensed under the MIT License. See the [LICENSE](https://github.com/anton-franck/nextcloud-install/V2-Beta/LICENSE) file for more information.
+This script is licensed under the MIT License. See the [LICENSE](LICENSE) file for more information.
 
 Copyright © 2024 Anton Franck.
