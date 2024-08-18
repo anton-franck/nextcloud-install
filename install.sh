@@ -96,7 +96,7 @@ fi
 
 BASE_PATH="/etc/php"
 
-for VERSION in {7..8}.{1..3} #Look who is the PHP-File
+for VERSION in {7..8}.{1..4} #Look who is the PHP-File
 do
     INI_FILE="$BASE_PATH/$VERSION/apache2/php.ini"
     
