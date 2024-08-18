@@ -1,11 +1,20 @@
 #!/bin/bash
 
-echo "Welcome to Nextcloud installation!"
+# This Script is from Anton-Franck (https://github.com/anton-franck) to install Nextcloud Easy
+
+# Look if the Script is running as Root
+if [ "$EUID" -ne 0 ]; then
+  echo "Please run the Script as root"
+  exit 1
+fi
+
+echo "Welcome to the Nextcloud-Installscript V2! for Ubuntu 20.04-24.04 and Debian 11 and 12"
 echo "Which version of Nextcloud would you like to install?"
 echo "1. Nextcloud 28"
-echo "2. Nextcloud 29"
+echo "2. Nextcloud 29 (Needs PHP 8)"
 echo "3. Latest version"
-read -p "Enter the number of the desired version: " version
+echo "4. Custom version // to install older Versions or Beta Versions"
+read -p "Enter the number which Version you want to install: " version
 
 if [ "$version" == "1" ]; then
     echo "Downloading Nextcloud 28..."
@@ -19,14 +28,30 @@ elif [ "$version" == "3" ]; then
     echo "Downloading latest version..."
     version="https://download.nextcloud.com/server/releases/latest.zip"
     zip="latest.zip"
+elif [ "$version" == "4" ]; then
+    read -p "Enter the URL of the desired Nextcloud version: " version
+    if [ "$version" != "" ]; then
+        zip=$(basename "$version")
+        if [[ "$zip" == *.zip ]]; then
+            echo "The zip file to download is: $zip"
+        else
+            echo "The URL does not point to a .zip file. Please provide a valid Nextcloud .zip URL."
+            exit 1
+        fi
+    else
+        echo "Invalid input. Please enter a valid URL."
+        exit 1
+    fi
 else
-    echo "Invalid input. Please enter either 1, 2, or 3."
+    echo "Invalid input. Please enter either 1, 2, 3, or 4."
+    exit 1
 fi
 
 cd /tmp
+echo "Downloading Nextcloud..."
 wget $version #Download Nextcloud from http://download.nextcloud.com/server/
 
-echo Install Lampstack
+echo "Install Lampstack"
 
 apt update  -y #Update Package List
 apt upgrade -y #Upgrade Packages
@@ -35,7 +60,7 @@ apt install mariadb-server -y #Install MariaDB
 apt install php libapache2-mod-php php-mysql php-curl php-gd php-json php-mbstring php-intl php-imagick php-xml php-zip php-bcmath php-gmp -y #Install PHP and its modules
 apt install unzip -y #Install Unzip
 
-echo Setup Database
+echo "Setup Database"
 
 mysql_secure_installation #Secure MariaDB Installation
 
@@ -43,8 +68,8 @@ myql CREATE DATABASE nextcloud; #Create Database for Nextcloud
 
 echo "Setup PhP"
 
-echo "Please enter the memory limit:"
-read -p "Enter the desired memory limit: " memoryphp
+echo "Now we ask you some Questions for PHP:"
+read -p "Enter the memory limit maybe(2048M): " memoryphp
 
 if [ "$memoryphp" != "" ]; then
     echo "The memory limit will be set to $memoryphp."
@@ -52,17 +77,15 @@ else
     echo "Invalid input. The memory limit will remain unchanged."
 fi
 
-echo "Please enter the upload limit:"
 read -p "Enter the desired upload size: " uploadphp
 
 if [ "$uploadphp" != "" ]; then
     echo "The upload limit will be set to $uploadphp."
 else
-    echo "Invalid input. The upload limit will remain unchanged."
+    echo "Invalid input. The upload limit will remain unchanged. maybe (50G)?"
 fi
 
-echo "Please enter the timezone (e.g., Europe/Berlin):"
-read -p "Enter the desired timezone: " timephp
+read -p "Please enter the timezone (e.g. Europe/Berlin): " timephp
 
 if [ "$timephp" != "" ]; then
     echo "The timezone will be set to $timephp."
@@ -71,7 +94,21 @@ else
 fi
 
 
-INI_FILE="/etc/php/8.1/apache2/php.ini"
+BASE_PATH="/etc/php"
+
+for VERSION in {7..8}.{1..4} #Look who is the PHP-File
+do
+    INI_FILE="$BASE_PATH/$VERSION/apache2/php.ini"
+    
+    if [ -f "$INI_FILE" ]; then
+        echo "Gefundene php.ini: $INI_FILE"
+        break
+    fi
+done
+
+if [ ! -f "$INI_FILE" ]; then
+    echo "The php.ini file does not exist."
+fi
 
 
 declare -A config_changes=( #All Changes for Php.ini
@@ -116,11 +153,36 @@ cd /tmp
 unzip $zip #Unzip Nextcloud
 rm $zip #Remove Zip File
 
-rm /var/www/html/index.html #Remove Apache2 Default Page
-mv nextcloud/* /var/www/html/ #Move Nextcloud Files to Apache2 Directory
+rm -rf /var/www/html #Remove Apache2 Default Page
+mv nextcloud/ /var/www/ #Move Nextcloud Files to Apache2 Directory
 
-chown -R www-data:www-data /var/www/html/ #Change Owner of Nextcloud-Directory
-chmod -R 755 /var/www/html/   #Change Permissions of Nextcloud-Directory
+chown -R www-data:www-data /var/www/nextcloud/ #Change Owner of Nextcloud-Directory
+chmod -R 755 /var/www/nextcloud/   #Change Permissions of Nextcloud-Directory
+
+cat <<EOL > /etc/apache2/sites-available/nextcloud.conf #Make a new Config File for Apache2
+<VirtualHost *:80>
+     DocumentRoot /var/www/nextcloud/
+     ServerAlias *
+     <Directory /var/www/nextcloud/>
+        Options +FollowSymlinks
+        AllowOverride All
+        Require all granted
+          <IfModule mod_dav.c>
+            Dav off
+          </IfModule>
+        SetEnv HOME /var/www/nextcloud
+        SetEnv HTTP_HOME /var/www/nextcloud
+     </Directory>
+     ErrorLog \${APACHE_LOG_DIR}/error.log
+     CustomLog \${APACHE_LOG_DIR}/access.log combined
+</VirtualHost>
+EOL
+
+a2ensite nextcloud.conf #Enable new config
+
+systemctl restart apache2
+
+echo "Die nextcloud.conf wurde erfolgreich erstellt und Apache2 wurde neu gestartet."
 
 a2enmod rewrite
 a2enmod headers
@@ -131,4 +193,7 @@ a2enmod mime #Enable Apache2 Modules
 service apache2 start #Start Apache2
 service apache2 restart #Restart Apache2
 
-echo "Nextcloud was successfully installed. Open your browser and enter the IP address of your server to complete the configuration."
+echo "Nextcloud was successfully installed. Open your browser and enter the IP address of your server to complete the configuration"
+echo "First write your Account Data. Setup it with root and the Databasepassword. The Database Name is nextcloud"
+
+# This Script is from Anton-Franck (https://github.com/anton-franck) to install Nextcloud Easy
