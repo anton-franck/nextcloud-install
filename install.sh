@@ -2,12 +2,12 @@
 
 # This Script is from Anton-Franck (https://github.com/anton-franck) to install Nextcloud Easy
 
-echo "Welcome to the Nextcloud-Installscript V1.9.2!"
+echo "Welcome to the Nextcloud-Installscript V1.9.4! for Ubuntu 20.04-24.04 and Debian 10-11"
 echo "Which version of Nextcloud would you like to install?"
 echo "1. Nextcloud 28"
 echo "2. Nextcloud 29"
 echo "3. Latest version"
-echo "4. Custom version"
+echo "4. Custom version // to install older Versions or Beta Versions"
 read -p "Enter the number which Version you want to install: " version
 
     if [ "$version" == "1" ]; then
@@ -45,7 +45,7 @@ cd /tmp
 echo "Downloading Nextcloud..."
 wget $version #Download Nextcloud from http://download.nextcloud.com/server/
 
-echo Install Lampstack
+echo "Install Lampstack"
 
 apt update  -y #Update Package List
 apt upgrade -y #Upgrade Packages
@@ -54,7 +54,7 @@ apt install mariadb-server -y #Install MariaDB
 apt install php libapache2-mod-php php-mysql php-curl php-gd php-json php-mbstring php-intl php-imagick php-xml php-zip php-bcmath php-gmp -y #Install PHP and its modules
 apt install unzip -y #Install Unzip
 
-echo Setup Database
+echo "Setup Database"
 
 mysql_secure_installation #Secure MariaDB Installation
 
@@ -101,7 +101,7 @@ do
 done
 
 if [ ! -f "$INI_FILE" ]; then
-    echo "Keine php.ini gefunden."
+    echo "The php.ini file does not exist."
 fi
 
 
