@@ -22,7 +22,7 @@ if [ "$version" == "1" ]; then
     zip="nextcloud-28.0.8.zip"
 elif [ "$version" == "2" ]; then
     echo "Downloading Nextcloud 29..."
-    version="https://download.nextcloud.com/server/releases/nextcloud-29.0.4.zip"
+    version="https://download.nextcloud.com/server/releases/nextcloud-29.0.7.zip"
     zip="nextcloud-29.0.4.zip"
 elif [ "$version" == "3" ]; then
     echo "Downloading latest version..."
