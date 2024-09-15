@@ -57,7 +57,7 @@ apt update  -y #Update Package List
 apt upgrade -y #Upgrade Packages
 apt install apache2 -y #Install Apache2
 apt install mariadb-server -y #Install MariaDB
-apt install php libapache2-mod-php php-mysql php-curl php-gd php-json php-mbstring php-intl php-imagick php-xml php-zip php-bcmath php-gmp -y #Install PHP and its modules
+apt install php libapache2-mod-php php-mysql php-curl php-gd php-json php-mbstring php-intl php-imagick php-xml php-zip php-bcmath php-gmp php-apcu -y #Install PHP and its modules
 apt install unzip -y #Install Unzip
 
 echo "Setup Database"
@@ -145,6 +145,9 @@ for param in "${!config_changes[@]}"; do
         echo "$param has been added and set to $new_value."
     fi
 done
+
+sed -i '2iapc.enable_cli=1' /etc/php/$VERSION/mods-available/apcu.ini #Add apc.enable_cli=1 to apcu.ini
+
 echo "All changes successfully completed."
 
 echo "Installing server"
