@@ -17,13 +17,13 @@ echo "4. Custom version // to install older Versions or Beta Versions"
 read -p "Enter the number which Version you want to install: " version
 
 if [ "$version" == "1" ]; then
-    echo "Downloading Nextcloud 28..."
-    version="https://download.nextcloud.com/server/releases/nextcloud-28.0.8.zip"
-    zip="nextcloud-28.0.8.zip"
-elif [ "$version" == "2" ]; then
     echo "Downloading Nextcloud 29..."
     version="https://download.nextcloud.com/server/releases/nextcloud-29.0.7.zip"
-    zip="nextcloud-29.0.4.zip"
+    zip="nextcloud-29.0.7.zip"
+elif [ "$version" == "2" ]; then
+    echo "Downloading Nextcloud 30..."
+    version="https://download.nextcloud.com/server/releases/nextcloud-30.0.0.zip"
+    zip="nextcloud-30.0.0.zip"
 elif [ "$version" == "3" ]; then
     echo "Downloading latest version..."
     version="https://download.nextcloud.com/server/releases/latest.zip"
